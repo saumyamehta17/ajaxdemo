@@ -3,10 +3,11 @@ class ProjectsController < ApplicationController
   # GET /projects.json
   def index
     @projects = Project.all
-
+    
     respond_to do |format|
       format.html # index.html.erb
       format.json { render json: @projects }
+      format.js
     end
   end
 
@@ -18,6 +19,7 @@ class ProjectsController < ApplicationController
     respond_to do |format|
       format.html # show.html.erb
       format.json { render json: @project }
+      format.js
     end
   end
 
@@ -40,6 +42,11 @@ class ProjectsController < ApplicationController
   # GET /projects/1/edit
   def edit
     @project = Project.find(params[:id])
+    respond_to do |format|
+      format.html # new.html.erb
+      format.json { render json: @project }
+      format.js
+    end
   end
 
   # POST /projects
@@ -51,6 +58,7 @@ class ProjectsController < ApplicationController
       if @project.save
         format.html { redirect_to @project, notice: 'Project was successfully created.' }
         format.json { render json: @project, status: :created, location: @project }
+        # format.js
       else
         format.html { render action: "new" }
         format.json { render json: @project.errors, status: :unprocessable_entity }
@@ -62,7 +70,7 @@ class ProjectsController < ApplicationController
   # PUT /projects/1.json
   def update
     @project = Project.find(params[:id])
-
+    
     respond_to do |format|
       if @project.update_attributes(params[:project])
         format.html { redirect_to @project, notice: 'Project was successfully updated.' }
@@ -79,10 +87,11 @@ class ProjectsController < ApplicationController
   def destroy
     @project = Project.find(params[:id])
     @project.destroy
-
+    @projects = Project.all
     respond_to do |format|
-      format.html { redirect_to projects_url }
+      format.html { redirect_to projects_path , notice: 'Project was successfully deleted.' }
       format.json { head :no_content }
+      format.js
     end
   end
 
